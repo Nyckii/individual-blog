@@ -1,8 +1,13 @@
-import StepExplorer from "@/components/StepExplorer";
-import { STEPS } from "@/lib/steps";
-import Link from "next/link";
+import CircuitBuilder from "@/components/CircuitBuilder";
+import type { Metadata } from "next";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Build Your Circuit: Peeling the Onion",
+  description:
+    "Hands-on: pick relay nodes, get session keys, and wrap the onion yourself.",
+};
+
+export default function BuildCircuitPage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="border-b border-gray-100">
@@ -13,8 +18,7 @@ export default function Home() {
                 Peeling the Onion
               </h1>
               <p className="mt-2 text-lg text-gray-500">
-                An interactive guide to how Tor and onion routing protect your
-                privacy on the internet.
+                Your turn: build a Tor circuit and wrap the onion yourself.
               </p>
             </div>
           </div>
@@ -22,20 +26,7 @@ export default function Home() {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-10">
-        <StepExplorer steps={STEPS} />
-
-        {/* Link to part 2 */}
-        <div className="mt-12 text-center">
-          <p className="text-gray-500 mb-3">
-            Now it&apos;s your turn. Build a Tor circuit yourself!
-          </p>
-          <Link
-            href="/build-circuit"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-violet-600 text-white font-medium hover:bg-violet-700 transition-colors"
-          >
-            Build Your Own Circuit →
-          </Link>
-        </div>
+        <CircuitBuilder />
       </main>
 
       <footer className="border-t border-gray-100 mt-16">

@@ -1,8 +1,15 @@
 import StepExplorer from "@/components/StepExplorer";
-import { STEPS } from "@/lib/steps";
+import { RETURN_STEPS } from "@/lib/return-steps";
+import type { Metadata } from "next";
 import Link from "next/link";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "The Response",
+  description:
+    "Part 2: How the website's response travels back through the Tor network to Alice.",
+};
+
+export default function ResponsePage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="border-b border-gray-100">
@@ -13,8 +20,7 @@ export default function Home() {
                 Peeling the Onion
               </h1>
               <p className="mt-2 text-lg text-gray-500">
-                An interactive guide to how Tor and onion routing protect your
-                privacy on the internet.
+                Part 2: How the website&apos;s response travels back to Alice.
               </p>
             </div>
           </div>
@@ -22,18 +28,15 @@ export default function Home() {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-10">
-        <StepExplorer steps={STEPS} />
+        <StepExplorer steps={RETURN_STEPS} />
 
-        {/* Link to part 2 */}
+        {/* Link back to part 1 */}
         <div className="mt-12 text-center">
-          <p className="text-gray-500 mb-3">
-            Now it&apos;s your turn. Build a Tor circuit yourself!
-          </p>
           <Link
-            href="/build-circuit"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-violet-600 text-white font-medium hover:bg-violet-700 transition-colors"
+            href="/"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors"
           >
-            Build Your Own Circuit →
+            ← Back to Part 1: Sending the Request
           </Link>
         </div>
       </main>

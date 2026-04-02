@@ -15,6 +15,18 @@ export default function VisibilityPanel({ step }: Props) {
 
   return (
     <div className="grid grid-cols-1 gap-3">
+      <div className="text-xs text-gray-500 flex flex-wrap items-center gap-x-5 gap-y-1">
+        <span className="inline-flex items-center gap-2">
+          <span className="inline-block w-4 text-center font-bold text-green-600">+</span>
+          Knows / can see
+        </span>
+        <span className="inline-flex items-center gap-2">
+          <span className="inline-block w-4 text-center font-bold text-red-600">
+            &ndash;
+          </span>
+          Cannot see
+        </span>
+      </div>
       <AnimatePresence mode="popLayout">
         {entries.map(([nodeId, vis]) => {
           const node = NODES.find((n) => n.id === nodeId);

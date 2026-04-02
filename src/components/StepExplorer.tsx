@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import type { Step } from "@/lib/steps";
-import NetworkDiagram from "./NetworkDiagram";
-import VisibilityPanel from "./VisibilityPanel";
-import PacketDiagram from "./PacketDiagram";
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
 import MessageInput from "./MessageInput";
+import NetworkDiagram from "./NetworkDiagram";
+import PacketDiagram from "./PacketDiagram";
 import Quiz from "./Quiz";
+import VisibilityPanel from "./VisibilityPanel";
 
 interface Props {
   steps: Step[];
@@ -126,7 +126,7 @@ export default function StepExplorer({
           {/* Key insight callout */}
           <div className="bg-violet-50 border border-violet-200 rounded-xl px-5 py-4 mb-4">
             <p className="text-sm font-medium text-violet-900">
-              <span className="font-bold">Key insight:</span> {step.insight}
+              <span className="font-bold">Remember:</span> {step.insight}
             </p>
           </div>
 

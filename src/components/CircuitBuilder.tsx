@@ -1,9 +1,17 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { AliceIcon, WebsiteIcon, RelayIcon, BookIcon, NewsIcon, MailIcon, KeyIcon, OnionIcon } from "./Icons";
+import { useCallback, useState } from "react";
+import {
+  BookIcon,
+  KeyIcon,
+  MailIcon,
+  NewsIcon,
+  OnionIcon,
+  RelayIcon,
+  WebsiteIcon,
+} from "./Icons";
 
 /* ───────── data ───────── */
 
@@ -15,10 +23,14 @@ const WEBSITES = [
 
 function WebsiteIconFor({ id, size = 20 }: { id: string; size?: number }) {
   switch (id) {
-    case "wiki": return <BookIcon size={size} />;
-    case "news": return <NewsIcon size={size} />;
-    case "mail": return <MailIcon size={size} />;
-    default: return <WebsiteIcon size={size} />;
+    case "wiki":
+      return <BookIcon size={size} />;
+    case "news":
+      return <NewsIcon size={size} />;
+    case "mail":
+      return <MailIcon size={size} />;
+    default:
+      return <WebsiteIcon size={size} />;
   }
 }
 
@@ -33,11 +45,32 @@ interface RelayNode {
 
 const RELAY_POOL: RelayNode[] = [
   { id: "relay-a", label: "Alpha", index: 0, ip: "85.214.47.13", x: 20, y: 15 },
-  { id: "relay-b", label: "Bravo", index: 1, ip: "104.244.72.115", x: 35, y: 70 },
-  { id: "relay-c", label: "Charlie", index: 2, ip: "198.51.100.89", x: 50, y: 20 },
+  {
+    id: "relay-b",
+    label: "Bravo",
+    index: 1,
+    ip: "104.244.72.115",
+    x: 35,
+    y: 70,
+  },
+  {
+    id: "relay-c",
+    label: "Charlie",
+    index: 2,
+    ip: "198.51.100.89",
+    x: 50,
+    y: 20,
+  },
   { id: "relay-d", label: "Delta", index: 3, ip: "45.33.32.156", x: 65, y: 75 },
   { id: "relay-e", label: "Echo", index: 4, ip: "172.67.182.31", x: 80, y: 25 },
-  { id: "relay-f", label: "Foxtrot", index: 5, ip: "91.219.237.229", x: 35, y: 40 },
+  {
+    id: "relay-f",
+    label: "Foxtrot",
+    index: 5,
+    ip: "91.219.237.229",
+    x: 35,
+    y: 40,
+  },
   { id: "relay-g", label: "Golf", index: 6, ip: "144.76.14.145", x: 65, y: 45 },
 ];
 
@@ -47,9 +80,11 @@ const ROLE_LABELS = ["Guard", "Middle", "Exit"] as const;
 const ROLE_COLORS = ["#ef4444", "#22c55e", "#3b82f6"] as const;
 
 function makeKey() {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let k = "";
-  for (let i = 0; i < 16; i++) k += chars[Math.floor(Math.random() * chars.length)];
+  for (let i = 0; i < 16; i++)
+    k += chars[Math.floor(Math.random() * chars.length)];
   return k;
 }
 
@@ -67,15 +102,46 @@ function toSvg(xPct: number, yPct: number) {
   };
 }
 
-const RELAY_COLORS = ["#22c55e", "#3b82f6", "#f97316", "#8b5cf6", "#ef4444", "#eab308", "#92400e"];
+const RELAY_COLORS = [
+  "#22c55e",
+  "#3b82f6",
+  "#f97316",
+  "#8b5cf6",
+  "#ef4444",
+  "#eab308",
+  "#92400e",
+];
 
 /** Renders a simple SVG icon for a relay node (colored circle with first letter) */
-function RelaySvgIcon({ relay, x, y }: { relay: RelayNode; x: number; y: number }) {
+function RelaySvgIcon({
+  relay,
+  x,
+  y,
+}: {
+  relay: RelayNode;
+  x: number;
+  y: number;
+}) {
   const color = RELAY_COLORS[relay.index % RELAY_COLORS.length];
   return (
     <g>
-      <circle cx={x} cy={y} r={8} fill={color + "30"} stroke={color} strokeWidth="1.5" />
-      <text x={x} y={y + 1} textAnchor="middle" dominantBaseline="central" fontSize={9} fontWeight={700} fill={color}>
+      <circle
+        cx={x}
+        cy={y}
+        r={8}
+        fill={color + "30"}
+        stroke={color}
+        strokeWidth="1.5"
+      />
+      <text
+        x={x}
+        y={y + 1}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontSize={9}
+        fontWeight={700}
+        fill={color}
+      >
         {relay.label[0]}
       </text>
     </g>
@@ -86,8 +152,25 @@ function RelaySvgIcon({ relay, x, y }: { relay: RelayNode; x: number; y: number 
 function AliceSvgIcon({ x, y }: { x: number; y: number }) {
   return (
     <g>
-      <rect x={x - 10} y={y - 8} width={20} height={14} rx={2} stroke="#6366f1" strokeWidth="1.5" fill="none" />
-      <line x1={x - 8} y1={y + 9} x2={x + 8} y2={y + 9} stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" />
+      <rect
+        x={x - 10}
+        y={y - 8}
+        width={20}
+        height={14}
+        rx={2}
+        stroke="#6366f1"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <line
+        x1={x - 8}
+        y1={y + 9}
+        x2={x + 8}
+        y2={y + 9}
+        stroke="#6366f1"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </g>
   );
 }
@@ -96,9 +179,31 @@ function AliceSvgIcon({ x, y }: { x: number; y: number }) {
 function WebsiteSvgIcon({ x, y }: { x: number; y: number }) {
   return (
     <g>
-      <circle cx={x} cy={y} r={10} stroke="#8b5cf6" strokeWidth="1.5" fill="none" />
-      <ellipse cx={x} cy={y} rx={4.5} ry={10} stroke="#8b5cf6" strokeWidth="1" fill="none" />
-      <line x1={x - 10} y1={y} x2={x + 10} y2={y} stroke="#8b5cf6" strokeWidth="1" />
+      <circle
+        cx={x}
+        cy={y}
+        r={10}
+        stroke="#8b5cf6"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <ellipse
+        cx={x}
+        cy={y}
+        rx={4.5}
+        ry={10}
+        stroke="#8b5cf6"
+        strokeWidth="1"
+        fill="none"
+      />
+      <line
+        x1={x - 10}
+        y1={y}
+        x2={x + 10}
+        y2={y}
+        stroke="#8b5cf6"
+        strokeWidth="1"
+      />
     </g>
   );
 }
@@ -122,15 +227,15 @@ interface SelectedNode {
 
 export default function CircuitBuilder() {
   const [phase, setPhase] = useState<Phase>("pick-website");
-  const [website, setWebsite] = useState<(typeof WEBSITES)[number] | null>(null);
+  const [website, setWebsite] = useState<(typeof WEBSITES)[number] | null>(
+    null,
+  );
   const [selected, setSelected] = useState<SelectedNode[]>([]);
   const [onionOrder, setOnionOrder] = useState<number[]>([]);
   const [wrongAttempt, setWrongAttempt] = useState(false);
 
   /* Website node position (rightmost) */
-  const websiteNode = website
-    ? { ...website, x: 100, y: 50 }
-    : null;
+  const websiteNode = website ? { ...website, x: 100, y: 50 } : null;
 
   /* ── pick website ── */
   const pickWebsite = useCallback((w: (typeof WEBSITES)[number]) => {
@@ -151,7 +256,7 @@ export default function CircuitBuilder() {
         setTimeout(() => setPhase("show-keys"), 800);
       }
     },
-    [selected]
+    [selected],
   );
 
   /* ── build onion ── */
@@ -170,7 +275,7 @@ export default function CircuitBuilder() {
         setTimeout(() => setPhase("done"), 600);
       }
     },
-    [onionOrder]
+    [onionOrder],
   );
 
   /* ── reset ── */
@@ -183,39 +288,56 @@ export default function CircuitBuilder() {
   }, []);
 
   /* ── progress ── */
-  const phases: Phase[] = ["pick-website", "pick-nodes", "show-keys", "build-onion", "done"];
+  const phases: Phase[] = [
+    "pick-website",
+    "pick-nodes",
+    "show-keys",
+    "build-onion",
+    "done",
+  ];
   const phaseIdx = phases.indexOf(phase);
 
   /* ── which relays are selected (by id) ── */
   const selectedIds = new Set(selected.map((s) => s.relay.id));
 
   /* ── circuit path for connections after selection ── */
-  const circuitPath = selected.length === 3
-    ? [ALICE, selected[0].relay, selected[1].relay, selected[2].relay, websiteNode!]
-    : null;
+  const circuitPath =
+    selected.length === 3
+      ? [
+          ALICE,
+          selected[0].relay,
+          selected[1].relay,
+          selected[2].relay,
+          websiteNode!,
+        ]
+      : null;
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Progress */}
       <div className="flex items-center gap-1.5 mb-8">
-        {["Choose destination", "Pick 3 relays", "Session keys", "Build the onion", "Done"].map(
-          (label, i) => (
-            <div key={label} className="flex-1">
-              <div
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i < phaseIdx
-                    ? "bg-violet-300"
-                    : i === phaseIdx
-                      ? "bg-violet-600"
-                      : "bg-gray-200"
-                }`}
-              />
-              <p className="text-[10px] text-gray-400 mt-1 text-center hidden sm:block">
-                {label}
-              </p>
-            </div>
-          )
-        )}
+        {[
+          "Choose destination",
+          "Pick 3 relays",
+          "Session keys",
+          "Build the onion",
+          "Done",
+        ].map((label, i) => (
+          <div key={label} className="flex-1">
+            <div
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i < phaseIdx
+                  ? "bg-violet-300"
+                  : i === phaseIdx
+                    ? "bg-violet-600"
+                    : "bg-gray-200"
+              }`}
+            />
+            <p className="text-[10px] text-gray-400 mt-1 text-center hidden sm:block">
+              {label}
+            </p>
+          </div>
+        ))}
       </div>
 
       <AnimatePresence mode="wait">
@@ -231,7 +353,8 @@ export default function CircuitBuilder() {
               Choose a destination
             </h2>
             <p className="text-gray-600 mb-6">
-              Alice wants to visit a website privately. Which site should she connect to?
+              Alice wants to visit a website privately. Which site should she
+              connect to?
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {WEBSITES.map((w) => (
@@ -240,9 +363,13 @@ export default function CircuitBuilder() {
                   onClick={() => pickWebsite(w)}
                   className="flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-gray-200 hover:border-violet-400 hover:bg-violet-50 transition-all"
                 >
-                  <span className="flex justify-center"><WebsiteIconFor id={w.id} size={40} /></span>
+                  <span className="flex justify-center">
+                    <WebsiteIconFor id={w.id} size={40} />
+                  </span>
                   <span className="font-semibold text-gray-900">{w.label}</span>
-                  <span className="text-xs font-mono text-gray-400">{w.ip}</span>
+                  <span className="text-xs font-mono text-gray-400">
+                    {w.ip}
+                  </span>
                 </button>
               ))}
             </div>
@@ -263,8 +390,12 @@ export default function CircuitBuilder() {
             <p className="text-gray-600 mb-2">
               Click on 3 relay nodes to create your circuit.{" "}
               {selected.length < 3 && (
-                <span className="font-semibold" style={{ color: ROLE_COLORS[selected.length] }}>
-                  Selecting: {ROLE_LABELS[selected.length]} node ({selected.length + 1}/3)
+                <span
+                  className="font-semibold"
+                  style={{ color: ROLE_COLORS[selected.length] }}
+                >
+                  Selecting: {ROLE_LABELS[selected.length]} node (
+                  {selected.length + 1}/3)
                 </span>
               )}
             </p>
@@ -328,10 +459,24 @@ export default function CircuitBuilder() {
                         strokeWidth={2}
                       />
                       <AliceSvgIcon x={pos.x} y={pos.y} />
-                      <text x={pos.x} y={pos.y + 50} textAnchor="middle" fontSize={13} fontWeight={600} fill="#374151">
+                      <text
+                        x={pos.x}
+                        y={pos.y + 50}
+                        textAnchor="middle"
+                        fontSize={13}
+                        fontWeight={600}
+                        fill="#374151"
+                      >
                         Alice
                       </text>
-                      <text x={pos.x} y={pos.y + 66} textAnchor="middle" fontSize={10} fontFamily="monospace" fill="#9ca3af">
+                      <text
+                        x={pos.x}
+                        y={pos.y + 66}
+                        textAnchor="middle"
+                        fontSize={10}
+                        fontFamily="monospace"
+                        fill="#9ca3af"
+                      >
                         {ALICE.ip}
                       </text>
                     </g>
@@ -341,9 +486,12 @@ export default function CircuitBuilder() {
                 {/* Relay nodes */}
                 {RELAY_POOL.map((relay) => {
                   const pos = toSvg(relay.x, relay.y);
-                  const selIdx = selected.findIndex((s) => s.relay.id === relay.id);
+                  const selIdx = selected.findIndex(
+                    (s) => s.relay.id === relay.id,
+                  );
                   const isSelected = selIdx !== -1;
-                  const isUnselectedAfterDone = selected.length === 3 && !isSelected;
+                  const isUnselectedAfterDone =
+                    selected.length === 3 && !isSelected;
 
                   return (
                     <motion.g
@@ -367,7 +515,8 @@ export default function CircuitBuilder() {
                             : ""
                         }
                         onClick={() => {
-                          if (selected.length < 3 && !isSelected) pickNode(relay);
+                          if (selected.length < 3 && !isSelected)
+                            pickNode(relay);
                         }}
                       />
                       {/* Visible circle */}
@@ -386,9 +535,14 @@ export default function CircuitBuilder() {
                         animate={{
                           scale: isSelected ? 1.05 : 1,
                         }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 20,
+                        }}
                         onClick={() => {
-                          if (selected.length < 3 && !isSelected) pickNode(relay);
+                          if (selected.length < 3 && !isSelected)
+                            pickNode(relay);
                         }}
                       />
                       {/* Hover ring for unselected */}
@@ -412,7 +566,8 @@ export default function CircuitBuilder() {
                             : ""
                         }
                         onClick={() => {
-                          if (selected.length < 3 && !isSelected) pickNode(relay);
+                          if (selected.length < 3 && !isSelected)
+                            pickNode(relay);
                         }}
                       >
                         <RelaySvgIcon relay={relay} x={pos.x} y={pos.y} />
@@ -444,7 +599,8 @@ export default function CircuitBuilder() {
                             : ""
                         }
                         onClick={() => {
-                          if (selected.length < 3 && !isSelected) pickNode(relay);
+                          if (selected.length < 3 && !isSelected)
+                            pickNode(relay);
                         }}
                       >
                         {relay.label}
@@ -465,28 +621,43 @@ export default function CircuitBuilder() {
                 })}
 
                 {/* Website node (always visible) */}
-                {websiteNode && (() => {
-                  const pos = toSvg(websiteNode.x, websiteNode.y);
-                  return (
-                    <g>
-                      <circle
-                        cx={pos.x}
-                        cy={pos.y}
-                        r={32}
-                        fill="#f9fafb"
-                        stroke="#d1d5db"
-                        strokeWidth={2}
-                      />
-                      <WebsiteSvgIcon x={pos.x} y={pos.y} />
-                      <text x={pos.x} y={pos.y + 50} textAnchor="middle" fontSize={13} fontWeight={600} fill="#374151">
-                        {websiteNode.label}
-                      </text>
-                      <text x={pos.x} y={pos.y + 66} textAnchor="middle" fontSize={10} fontFamily="monospace" fill="#9ca3af">
-                        {websiteNode.ip}
-                      </text>
-                    </g>
-                  );
-                })()}
+                {websiteNode &&
+                  (() => {
+                    const pos = toSvg(websiteNode.x, websiteNode.y);
+                    return (
+                      <g>
+                        <circle
+                          cx={pos.x}
+                          cy={pos.y}
+                          r={32}
+                          fill="#f9fafb"
+                          stroke="#d1d5db"
+                          strokeWidth={2}
+                        />
+                        <WebsiteSvgIcon x={pos.x} y={pos.y} />
+                        <text
+                          x={pos.x}
+                          y={pos.y + 50}
+                          textAnchor="middle"
+                          fontSize={13}
+                          fontWeight={600}
+                          fill="#374151"
+                        >
+                          {websiteNode.label}
+                        </text>
+                        <text
+                          x={pos.x}
+                          y={pos.y + 66}
+                          textAnchor="middle"
+                          fontSize={10}
+                          fontFamily="monospace"
+                          fill="#9ca3af"
+                        >
+                          {websiteNode.ip}
+                        </text>
+                      </g>
+                    );
+                  })()}
               </svg>
             </div>
           </motion.div>
@@ -504,8 +675,9 @@ export default function CircuitBuilder() {
               Session keys established
             </h2>
             <p className="text-gray-600 mb-6">
-              Alice has negotiated a secret session key with each relay using Diffie-Hellman key exchange.
-              Each node only knows its own key. Alice knows all three.
+              Alice has negotiated a secret session key with each relay using
+              Diffie-Hellman key exchange. Each node only knows its own key.
+              Alice knows all three.
             </p>
 
             {/* Circuit diagram (SVG, final path only) */}
@@ -536,9 +708,25 @@ export default function CircuitBuilder() {
                   const pos = toSvg(ALICE.x, ALICE.y);
                   return (
                     <g>
-                      <circle cx={pos.x} cy={pos.y} r={32} fill="#f9fafb" stroke="#d1d5db" strokeWidth={2} />
+                      <circle
+                        cx={pos.x}
+                        cy={pos.y}
+                        r={32}
+                        fill="#f9fafb"
+                        stroke="#d1d5db"
+                        strokeWidth={2}
+                      />
                       <AliceSvgIcon x={pos.x} y={pos.y} />
-                      <text x={pos.x} y={pos.y + 50} textAnchor="middle" fontSize={13} fontWeight={600} fill="#374151">Alice</text>
+                      <text
+                        x={pos.x}
+                        y={pos.y + 50}
+                        textAnchor="middle"
+                        fontSize={13}
+                        fontWeight={600}
+                        fill="#374151"
+                      >
+                        Alice
+                      </text>
                     </g>
                   );
                 })()}
@@ -548,12 +736,33 @@ export default function CircuitBuilder() {
                   const pos = toSvg(s.relay.x, s.relay.y);
                   return (
                     <g key={s.relay.id}>
-                      <circle cx={pos.x} cy={pos.y} r={32} fill="#f5f3ff" stroke={ROLE_COLORS[i]} strokeWidth={3} />
+                      <circle
+                        cx={pos.x}
+                        cy={pos.y}
+                        r={32}
+                        fill="#f5f3ff"
+                        stroke={ROLE_COLORS[i]}
+                        strokeWidth={3}
+                      />
                       <RelaySvgIcon relay={s.relay} x={pos.x} y={pos.y} />
-                      <text x={pos.x} y={pos.y - 42} textAnchor="middle" fontSize={11} fontWeight={700} fill={ROLE_COLORS[i]}>
+                      <text
+                        x={pos.x}
+                        y={pos.y - 42}
+                        textAnchor="middle"
+                        fontSize={11}
+                        fontWeight={700}
+                        fill={ROLE_COLORS[i]}
+                      >
                         {ROLE_LABELS[i]}
                       </text>
-                      <text x={pos.x} y={pos.y + 50} textAnchor="middle" fontSize={12} fontWeight={600} fill={ROLE_COLORS[i]}>
+                      <text
+                        x={pos.x}
+                        y={pos.y + 50}
+                        textAnchor="middle"
+                        fontSize={12}
+                        fontWeight={600}
+                        fill={ROLE_COLORS[i]}
+                      >
                         {s.relay.label}
                       </text>
                     </g>
@@ -561,16 +770,33 @@ export default function CircuitBuilder() {
                 })}
 
                 {/* Website */}
-                {websiteNode && (() => {
-                  const pos = toSvg(websiteNode.x, websiteNode.y);
-                  return (
-                    <g>
-                      <circle cx={pos.x} cy={pos.y} r={32} fill="#f9fafb" stroke="#d1d5db" strokeWidth={2} />
-                      <WebsiteSvgIcon x={pos.x} y={pos.y} />
-                      <text x={pos.x} y={pos.y + 50} textAnchor="middle" fontSize={13} fontWeight={600} fill="#374151">{websiteNode.label}</text>
-                    </g>
-                  );
-                })()}
+                {websiteNode &&
+                  (() => {
+                    const pos = toSvg(websiteNode.x, websiteNode.y);
+                    return (
+                      <g>
+                        <circle
+                          cx={pos.x}
+                          cy={pos.y}
+                          r={32}
+                          fill="#f9fafb"
+                          stroke="#d1d5db"
+                          strokeWidth={2}
+                        />
+                        <WebsiteSvgIcon x={pos.x} y={pos.y} />
+                        <text
+                          x={pos.x}
+                          y={pos.y + 50}
+                          textAnchor="middle"
+                          fontSize={13}
+                          fontWeight={600}
+                          fill="#374151"
+                        >
+                          {websiteNode.label}
+                        </text>
+                      </g>
+                    );
+                  })()}
               </svg>
             </div>
 
@@ -583,18 +809,27 @@ export default function CircuitBuilder() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.3 }}
                   className="flex items-center gap-4 p-4 rounded-xl border"
-                  style={{ borderColor: ROLE_COLORS[i] + "60", backgroundColor: ROLE_COLORS[i] + "08" }}
+                  style={{
+                    borderColor: ROLE_COLORS[i] + "60",
+                    backgroundColor: ROLE_COLORS[i] + "08",
+                  }}
                 >
                   <RelayIcon index={s.relay.index} size={24} />
                   <div className="flex-1">
-                    <p className="text-sm font-semibold" style={{ color: ROLE_COLORS[i] }}>
+                    <p
+                      className="text-sm font-semibold"
+                      style={{ color: ROLE_COLORS[i] }}
+                    >
                       {s.role}: {s.relay.label}
                     </p>
                     <p className="text-xs text-gray-500">Session key:</p>
                   </div>
                   <code
                     className="px-3 py-1.5 rounded-lg text-sm font-mono"
-                    style={{ backgroundColor: ROLE_COLORS[i] + "15", color: ROLE_COLORS[i] }}
+                    style={{
+                      backgroundColor: ROLE_COLORS[i] + "15",
+                      color: ROLE_COLORS[i],
+                    }}
                   >
                     <KeyIcon size={12} /> {s.sessionKey}
                   </code>
@@ -604,8 +839,9 @@ export default function CircuitBuilder() {
 
             <div className="bg-violet-50 border border-violet-200 rounded-xl px-5 py-4 mb-6">
               <p className="text-sm font-medium text-violet-900">
-                <span className="font-bold">Key insight:</span> Each relay only knows its own session key.
-                Alice knows all three. This is what lets her build the encrypted onion.
+                <span className="font-bold">Remember:</span> Each relay only
+                knows its own session key. Alice knows all three. This is what
+                lets her build the encrypted onion.
               </p>
             </div>
 
@@ -630,14 +866,18 @@ export default function CircuitBuilder() {
               Build the onion
             </h2>
             <p className="text-gray-600 mb-6">
-              Wrap the message in encryption layers. Think about the order carefully:
-              which node will peel the <em>last</em> layer? That key should be wrapped <em>first</em> (innermost).
-              Click the keys below in the correct order.
+              Wrap the message in encryption layers. Think about the order
+              carefully: which node will peel the <em>last</em> layer? That key
+              should be wrapped <em>first</em> (innermost). Click the keys below
+              in the correct order.
             </p>
 
             {/* Onion visualization */}
             <div className="flex flex-col items-center mb-8">
-              <div className="relative flex items-center justify-center" style={{ minHeight: 180 }}>
+              <div
+                className="relative flex items-center justify-center"
+                style={{ minHeight: 180 }}
+              >
                 {[...onionOrder].reverse().map((nodeIdx, visualIdx) => {
                   const depth = onionOrder.length - visualIdx;
                   const size = 100 + depth * 50;
@@ -658,7 +898,9 @@ export default function CircuitBuilder() {
                 })}
                 <div className="relative z-10 bg-yellow-100 border-2 border-yellow-400 rounded-xl px-4 py-2 text-center">
                   <p className="text-xs text-yellow-700 font-medium">Message</p>
-                  <p className="text-[10px] text-yellow-600">→ {website!.label}</p>
+                  <p className="text-[10px] text-yellow-600">
+                    → {website!.label}
+                  </p>
                 </div>
               </div>
 
@@ -673,7 +915,12 @@ export default function CircuitBuilder() {
                         color: ROLE_COLORS[nodeIdx],
                       }}
                     >
-                      {i === 0 ? "Inner" : i === onionOrder.length - 1 ? "Outer" : "Middle"}: {selected[nodeIdx].role}
+                      {i === 0
+                        ? "Inner"
+                        : i === onionOrder.length - 1
+                          ? "Outer"
+                          : "Middle"}
+                      : {selected[nodeIdx].role}
                     </span>
                   ))}
                 </div>
@@ -702,7 +949,8 @@ export default function CircuitBuilder() {
                   className="bg-red-50 border border-red-200 rounded-xl px-5 py-3 mb-4"
                 >
                   <p className="text-sm text-red-700">
-                    Not quite! Think about the order each node decrypts. The last decryptor&apos;s key is wrapped first.
+                    Not quite! Think about the order each node decrypts. The
+                    last decryptor&apos;s key is wrapped first.
                   </p>
                 </motion.div>
               )}
@@ -725,14 +973,19 @@ export default function CircuitBuilder() {
                   >
                     <RelayIcon index={s.relay.index} size={24} />
                     <div className="text-left flex-1">
-                      <p className="text-sm font-semibold" style={{ color: ROLE_COLORS[i] }}>
+                      <p
+                        className="text-sm font-semibold"
+                        style={{ color: ROLE_COLORS[i] }}
+                      >
                         {s.role}
                       </p>
                       <code className="text-[10px] font-mono text-gray-400">
                         <KeyIcon size={12} /> {s.sessionKey}
                       </code>
                     </div>
-                    {used && <span className="text-green-500 font-bold">Done</span>}
+                    {used && (
+                      <span className="text-green-500 font-bold">Done</span>
+                    )}
                   </button>
                 );
               })}
@@ -762,9 +1015,11 @@ export default function CircuitBuilder() {
                 Onion built correctly!
               </h2>
               <p className="text-gray-600 max-w-lg mx-auto">
-                You wrapped the message with the <strong>Exit</strong> key first (innermost),
-                then the <strong>Middle</strong> key, and finally the <strong>Guard</strong> key (outermost).
-                As the message travels through each relay, they peel their layer, exactly in reverse order.
+                You wrapped the message with the <strong>Exit</strong> key first
+                (innermost), then the <strong>Middle</strong> key, and finally
+                the <strong>Guard</strong> key (outermost). As the message
+                travels through each relay, they peel their layer, exactly in
+                reverse order.
               </p>
             </div>
 
@@ -810,9 +1065,25 @@ export default function CircuitBuilder() {
                   const pos = toSvg(ALICE.x, ALICE.y);
                   return (
                     <g>
-                      <circle cx={pos.x} cy={pos.y} r={32} fill="#f9fafb" stroke="#d1d5db" strokeWidth={2} />
+                      <circle
+                        cx={pos.x}
+                        cy={pos.y}
+                        r={32}
+                        fill="#f9fafb"
+                        stroke="#d1d5db"
+                        strokeWidth={2}
+                      />
                       <AliceSvgIcon x={pos.x} y={pos.y} />
-                      <text x={pos.x} y={pos.y + 50} textAnchor="middle" fontSize={13} fontWeight={600} fill="#374151">Alice</text>
+                      <text
+                        x={pos.x}
+                        y={pos.y + 50}
+                        textAnchor="middle"
+                        fontSize={13}
+                        fontWeight={600}
+                        fill="#374151"
+                      >
+                        Alice
+                      </text>
                     </g>
                   );
                 })()}
@@ -820,31 +1091,73 @@ export default function CircuitBuilder() {
                   const pos = toSvg(s.relay.x, s.relay.y);
                   return (
                     <g key={s.relay.id}>
-                      <circle cx={pos.x} cy={pos.y} r={32} fill="#f5f3ff" stroke={ROLE_COLORS[i]} strokeWidth={3} />
+                      <circle
+                        cx={pos.x}
+                        cy={pos.y}
+                        r={32}
+                        fill="#f5f3ff"
+                        stroke={ROLE_COLORS[i]}
+                        strokeWidth={3}
+                      />
                       <RelaySvgIcon relay={s.relay} x={pos.x} y={pos.y} />
-                      <text x={pos.x} y={pos.y - 42} textAnchor="middle" fontSize={11} fontWeight={700} fill={ROLE_COLORS[i]}>{ROLE_LABELS[i]}</text>
-                      <text x={pos.x} y={pos.y + 50} textAnchor="middle" fontSize={12} fontWeight={600} fill={ROLE_COLORS[i]}>{s.relay.label}</text>
+                      <text
+                        x={pos.x}
+                        y={pos.y - 42}
+                        textAnchor="middle"
+                        fontSize={11}
+                        fontWeight={700}
+                        fill={ROLE_COLORS[i]}
+                      >
+                        {ROLE_LABELS[i]}
+                      </text>
+                      <text
+                        x={pos.x}
+                        y={pos.y + 50}
+                        textAnchor="middle"
+                        fontSize={12}
+                        fontWeight={600}
+                        fill={ROLE_COLORS[i]}
+                      >
+                        {s.relay.label}
+                      </text>
                     </g>
                   );
                 })}
-                {websiteNode && (() => {
-                  const pos = toSvg(websiteNode.x, websiteNode.y);
-                  return (
-                    <g>
-                      <circle cx={pos.x} cy={pos.y} r={32} fill="#f9fafb" stroke="#d1d5db" strokeWidth={2} />
-                      <WebsiteSvgIcon x={pos.x} y={pos.y} />
-                      <text x={pos.x} y={pos.y + 50} textAnchor="middle" fontSize={13} fontWeight={600} fill="#374151">{websiteNode.label}</text>
-                    </g>
-                  );
-                })()}
+                {websiteNode &&
+                  (() => {
+                    const pos = toSvg(websiteNode.x, websiteNode.y);
+                    return (
+                      <g>
+                        <circle
+                          cx={pos.x}
+                          cy={pos.y}
+                          r={32}
+                          fill="#f9fafb"
+                          stroke="#d1d5db"
+                          strokeWidth={2}
+                        />
+                        <WebsiteSvgIcon x={pos.x} y={pos.y} />
+                        <text
+                          x={pos.x}
+                          y={pos.y + 50}
+                          textAnchor="middle"
+                          fontSize={13}
+                          fontWeight={600}
+                          fill="#374151"
+                        >
+                          {websiteNode.label}
+                        </text>
+                      </g>
+                    );
+                  })()}
               </svg>
             </div>
 
             <div className="bg-violet-50 border border-violet-200 rounded-xl px-5 py-4 mb-8 max-w-lg mx-auto">
               <p className="text-sm font-medium text-violet-900">
-                <span className="font-bold">Key insight:</span> The order matters!
-                The innermost layer is for the last node, because each relay peels
-                exactly one layer before forwarding.
+                <span className="font-bold">Remember:</span> The order matters!
+                The innermost layer is for the last node, because each relay
+                peels exactly one layer before forwarding.
               </p>
             </div>
 

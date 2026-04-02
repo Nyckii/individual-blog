@@ -802,7 +802,7 @@ export default function AttackerChallenge() {
 
             <div className="bg-violet-50 border border-violet-200 rounded-xl px-5 py-4 mb-8">
               <p className="text-sm font-medium text-violet-900">
-                <span className="font-bold">Key insight:</span>{" "}
+                <span className="font-bold">Remember:</span>{" "}
                 {vantage.id === "isp"
                   ? "The ISP knows Alice is using Tor but is completely blind to what she's doing or where she's going, that's the power of onion routing."
                   : vantage.id === "guard"

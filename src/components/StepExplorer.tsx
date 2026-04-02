@@ -1,6 +1,7 @@
 "use client";
 
 import type { Step } from "@/lib/steps";
+import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import MessageInput from "./MessageInput";
@@ -13,6 +14,8 @@ interface Props {
   steps: Step[];
   showMessageInput?: boolean;
   showQuiz?: boolean;
+  /** Content shown only when the learner reaches the last step */
+  endCta?: ReactNode;
   /** Label for the message input */
   messageLabel?: string;
   /** Default placeholder for the message */
@@ -23,6 +26,7 @@ export default function StepExplorer({
   steps,
   showMessageInput = false,
   showQuiz = false,
+  endCta,
   messageLabel,
   messagePlaceholder,
 }: Props) {
@@ -73,24 +77,6 @@ export default function StepExplorer({
           placeholder={messagePlaceholder}
         />
       )}
-
-      {/* Progress bar */}
-      <div className="flex items-center gap-1.5 mb-6">
-        {steps.map((s) => (
-          <button
-            key={s.id}
-            onClick={() => setCurrentStep(s.id)}
-            className={`h-2 flex-1 rounded-full transition-all duration-300 ${
-              s.id === currentStep
-                ? "bg-violet-600"
-                : s.id < currentStep
-                  ? "bg-violet-300"
-                  : "bg-gray-200"
-            }`}
-            aria-label={`Go to step ${s.id + 1}: ${s.title}`}
-          />
-        ))}
-      </div>
 
       {/* Step counter + keyboard hint */}
       <div className="flex items-center justify-between mb-2">
@@ -148,7 +134,11 @@ export default function StepExplorer({
       </AnimatePresence>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between mt-8">
+      <div
+        className={`flex items-center mt-8 gap-4 ${
+          currentStep === steps.length - 1 ? "justify-start" : "justify-between"
+        }`}
+      >
         <button
           onClick={goPrev}
           disabled={currentStep === 0}
@@ -157,14 +147,17 @@ export default function StepExplorer({
           ← Previous
         </button>
 
-        <button
-          onClick={goNext}
-          disabled={currentStep === steps.length - 1}
-          className="px-6 py-2.5 rounded-xl text-sm font-medium bg-violet-600 text-white hover:bg-violet-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          Next →
-        </button>
+        {currentStep < steps.length - 1 && (
+          <button
+            onClick={goNext}
+            className="px-6 py-2.5 rounded-xl text-sm font-medium bg-violet-600 text-white hover:bg-violet-700 transition-colors"
+          >
+            Next →
+          </button>
+        )}
       </div>
+
+      {currentStep === steps.length - 1 && endCta}
     </div>
   );
 }

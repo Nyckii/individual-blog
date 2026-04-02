@@ -22,20 +22,22 @@ export default function Home() {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-10">
-        <StepExplorer steps={STEPS} />
-
-        {/* Link to part 2 */}
-        <div className="mt-12 text-center">
-          <p className="text-gray-500 mb-3">
-            Now it&apos;s your turn. Build a Tor circuit yourself!
-          </p>
-          <Link
-            href="/build-circuit"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-violet-600 text-white font-medium hover:bg-violet-700 transition-colors"
-          >
-            Build Your Own Circuit →
-          </Link>
-        </div>
+        <StepExplorer
+          steps={STEPS}
+          endCta={
+            <div className="mt-12 text-center">
+              <p className="text-gray-500 mb-3">
+                Now it&apos;s your turn. Build a Tor circuit yourself!
+              </p>
+              <Link
+                href="/build-circuit"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-violet-600 text-white font-medium hover:bg-violet-700 transition-colors"
+              >
+                Build Your Own Circuit →
+              </Link>
+            </div>
+          }
+        />
       </main>
 
       <footer className="border-t border-gray-100 mt-16">

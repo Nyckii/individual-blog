@@ -46,7 +46,7 @@ export const RETURN_STEPS: Step[] = [
     id: 2,
     title: "Exit Forwards to Middle Node",
     description:
-      "The Exit node sends the once-encrypted response to the Middle node. The Middle node can't read it - it just adds another layer of encryption using its own session key with Alice, creating a 2-layer onion.",
+      "The Exit node forwards the once-encrypted response to the Middle node because the Middle relay is the \"previous hop\" on the already-built circuit. The payload is already wrapped with the Exit's pre-negotiated session key (so only Alice can peel that layer later). Middle can't read what it contains; it simply wraps the whole payload in an additional layer using its own session key with Alice, growing the onion back to 2 layers.",
     messageAt: "middle",
     encryptionLayers: 2,
     visibility: {
